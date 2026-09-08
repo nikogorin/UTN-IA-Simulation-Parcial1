@@ -55,7 +55,7 @@ public class SteeringAgent : Agent
 
     private Transform _currentTransform;
     private readonly List<Agent> _flockAgents = new();
-    private readonly List<Agent> _hunterAgents = new();
+    private readonly List<FSM> _hunterAgents = new();
     //private static List<Agent> _allAgents = new();
 
     private void Awake()
@@ -299,7 +299,7 @@ public class SteeringAgent : Agent
         Collider[] hunterColliders = Physics.OverlapSphere(_currentTransform.position, hunterDetectionRadius, hunterLayer); // No need to use NonAlloc version since we are not concerned about performance here
         foreach (var collider in hunterColliders)
         {
-            Agent agent = collider.GetComponent<Agent>();
+            FSM agent = collider.GetComponent<FSM>();
             if (agent != null && agent != this)
             {
                 _hunterAgents.Add(agent);

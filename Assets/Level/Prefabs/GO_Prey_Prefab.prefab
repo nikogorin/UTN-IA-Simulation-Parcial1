@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 3586933564965537797}
   - component: {fileID: 6764934902891362453}
   m_Layer: 11
-  m_Name: Mesh_Actor
+  m_Name: VisualPrey
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -124,6 +124,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7037530280026410820}
+  - component: {fileID: 6521380509356918531}
+  - component: {fileID: 4603057649958766097}
   m_Layer: 11
   m_Name: GO_Prey_Prefab
   m_TagString: Untagged
@@ -140,14 +142,64 @@ Transform:
   m_GameObject: {fileID: 3819430864234475397}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3.78786, y: -0, z: 3.78786}
+  m_LocalPosition: {x: 0, y: -0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3144995808700264139}
-  - {fileID: 9194537034085224979}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!135 &6521380509356918531
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3819430864234475397}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 3
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &4603057649958766097
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3819430864234475397}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 132a9256d6ac3704593c67f133489099, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SteeringAgent
+  speed: 5
+  maxAcceleration: 2
+  hunterLayer:
+    serializedVersion: 2
+    m_Bits: 1024
+  hunterDetectionRadius: 25
+  flockLayer:
+    serializedVersion: 2
+    m_Bits: 2048
+  flockDetectionRadius: 15
+  slowingDistance: 2
+  separationDistance: 2
+  alignmentDistance: 4
+  cohesionDistance: 4
+  separationWeight: 3
+  alignmentWeight: 2
+  cohesionWeight: 2
+  drawGizmos: 0
 --- !u!1 &5828972906789951322
 GameObject:
   m_ObjectHideFlags: 0
@@ -161,7 +213,7 @@ GameObject:
   - component: {fileID: 1331609989457649837}
   - component: {fileID: 8419537024459860056}
   m_Layer: 11
-  m_Name: Eyes_Actor
+  m_Name: VisualPreyEyes
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -259,89 +311,4 @@ BoxCollider:
   m_Enabled: 1
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
---- !u!1 &6820324987689258131
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 9194537034085224979}
-  - component: {fileID: 6210069882928082833}
-  - component: {fileID: 7961675001876419007}
-  m_Layer: 11
-  m_Name: Script_Actor
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &9194537034085224979
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6820324987689258131}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 7037530280026410820}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6210069882928082833
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6820324987689258131}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 132a9256d6ac3704593c67f133489099, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::SteeringAgent
-  speed: 5
-  maxAcceleration: 3
-  hunterLayer:
-    serializedVersion: 2
-    m_Bits: 1024
-  hunterDetectionRadius: 25
-  flockLayer:
-    serializedVersion: 2
-    m_Bits: 2048
-  flockDetectionRadius: 15
-  slowingDistance: 2
-  currentSteering: 5
-  separationDistance: 3
-  alignmentDistance: 4
-  cohesionDistance: 4
-  separationWeight: 3
-  alignmentWeight: 2
-  cohesionWeight: 2
-  drawGizmos: 0
---- !u!135 &7961675001876419007
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6820324987689258131}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Radius: 3
   m_Center: {x: 0, y: 0, z: 0}
