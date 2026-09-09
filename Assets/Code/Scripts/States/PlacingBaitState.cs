@@ -13,18 +13,18 @@ public class PlacingBaitState : State
 
     public override void Enter()
     {
-        Debug.Log("Entering Idle State");
+        //Debug.Log("Entering Idle State");
         _placingBaitTime = 0f;
     }
 
     public override void Exit()
     {
-        Debug.Log("Exiting Idle State");
+        //Debug.Log("Exiting Idle State");
     }
 
     public override void Update()
     {
-        Debug.Log("Updating Idle State");
+        //Debug.Log("Updating Idle State");
         _placingBaitTime += Time.deltaTime;
 
         if (_timerToChange <= _placingBaitTime)

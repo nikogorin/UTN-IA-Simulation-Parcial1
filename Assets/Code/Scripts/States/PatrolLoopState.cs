@@ -2,21 +2,21 @@ using UnityEngine;
 
 public class PatrolLoopState : State
 {
-    private readonly FSM _agent;
+    private readonly FSMAgent _agent;
     private readonly PatrolData _patrolData;
 
     private int _currentWaypointIndex = 0;
     private float _patrolTimer = 0f;
     private float _patrolDuration = 5f; // Duration to stay in patrol state before switching
 
-    public PatrolLoopState(FSM fSM, PatrolData patrolData, StateMachine stateMachine) : base(stateMachine)
+    public PatrolLoopState(FSMAgent fSM, PatrolData patrolData, StateMachine stateMachine) : base(stateMachine)
     {
         _agent = fSM;
         _patrolData = patrolData;
     }
     public override void Enter()
     {
-        Debug.Log("Entering PatrolLoop State");
+        //Debug.Log("Entering PatrolLoop State");
         _patrolTimer = 0f;
     }
 
@@ -32,7 +32,7 @@ public class PatrolLoopState : State
 
     public override void Exit()
     {
-        Debug.Log("Exiting PatrolLoop State");
+        //Debug.Log("Exiting PatrolLoop State");
     }
 
     private void PatrolLoop()

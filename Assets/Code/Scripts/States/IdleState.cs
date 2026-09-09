@@ -12,18 +12,18 @@ public class IdleState : State
 
     public override void Enter()
     {
-        Debug.Log("Entering Idle State");
+        //Debug.Log("Entering Idle State");
         _idleTime = 0f;
     }
 
     public override void Exit()
     {
-        Debug.Log("Exiting Idle State");
+        //Debug.Log("Exiting Idle State");
     }
 
     public override void Update()
     {
-        Debug.Log("Updating Idle State");
+        //Debug.Log("Updating Idle State");
         _idleTime += Time.deltaTime;
 
         if (_timerToChange <= _idleTime)

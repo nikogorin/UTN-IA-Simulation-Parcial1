@@ -2,20 +2,20 @@ using UnityEngine;
 
 public class PatrolPingPongState : State
 {
-    private readonly FSM _agent;
+    private readonly FSMAgent _agent;
     private readonly PatrolData _patrolData;
 
     private int _currentWaypointIndex = 0;
     private int _patrolDirection = 1;
 
-    public PatrolPingPongState(FSM fSM, PatrolData patrolData, StateMachine stateMachine) : base(stateMachine)
+    public PatrolPingPongState(FSMAgent fSM, PatrolData patrolData, StateMachine stateMachine) : base(stateMachine)
     {
         _agent = fSM;
         _patrolData = patrolData;
     }
     public override void Enter()
     {
-        Debug.Log("Entering PatrolPingPong State");
+        //Debug.Log("Entering PatrolPingPong State");
     }
 
     public override void Update()
@@ -25,7 +25,7 @@ public class PatrolPingPongState : State
 
     public override void Exit()
     {
-        Debug.Log("Exiting PatrolPingPong State");
+        //Debug.Log("Exiting PatrolPingPong State");
     }
 
     private void PatrolPingPong()

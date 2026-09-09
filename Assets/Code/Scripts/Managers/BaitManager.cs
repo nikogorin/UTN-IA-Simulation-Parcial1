@@ -42,5 +42,4 @@ public class BaitManager : MonoBehaviour
         bait.Destroyed -= OnBaitDestroyed;
         _baits.Remove(bait);
     }
-
 }

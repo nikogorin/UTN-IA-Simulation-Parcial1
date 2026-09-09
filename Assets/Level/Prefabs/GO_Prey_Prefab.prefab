@@ -125,7 +125,8 @@ GameObject:
   m_Component:
   - component: {fileID: 7037530280026410820}
   - component: {fileID: 6521380509356918531}
-  - component: {fileID: 4603057649958766097}
+  - component: {fileID: 2165593959663399721}
+  - component: {fileID: 9122355600853429752}
   m_Layer: 11
   m_Name: GO_Prey_Prefab
   m_TagString: Untagged
@@ -170,7 +171,7 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 3
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &4603057649958766097
+--- !u!114 &2165593959663399721
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -179,26 +180,45 @@ MonoBehaviour:
   m_GameObject: {fileID: 3819430864234475397}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 132a9256d6ac3704593c67f133489099, type: 3}
+  m_Script: {fileID: 11500000, guid: 77912c23caa5235488760468ad993ac6, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::SteeringAgent
+  m_EditorClassIdentifier: Assembly-CSharp::HealthAgent
+  _maxHealth: 80
+--- !u!114 &9122355600853429752
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3819430864234475397}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f272029f908de534f86a2d41a2e61752, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PreyAgent
   speed: 5
   maxAcceleration: 2
-  hunterLayer:
-    serializedVersion: 2
-    m_Bits: 1024
-  hunterDetectionRadius: 25
-  flockLayer:
-    serializedVersion: 2
-    m_Bits: 2048
-  flockDetectionRadius: 15
+  arrivalThreshold: 0.2
   slowingDistance: 2
   separationDistance: 2
-  alignmentDistance: 4
-  cohesionDistance: 4
+  alignmentDistance: 3
+  cohesionDistance: 3
   separationWeight: 3
   alignmentWeight: 2
   cohesionWeight: 2
+  flockLayer:
+    serializedVersion: 2
+    m_Bits: 2048
+  flockDetectionRadius: 10
+  hunterLayer:
+    serializedVersion: 2
+    m_Bits: 1024
+  hunterDetectionRadius: 12
+  baitLayer:
+    serializedVersion: 2
+    m_Bits: 4096
+  baitDetectionRadius: 15
+  eatingDistance: 0.7
   drawGizmos: 0
 --- !u!1 &5828972906789951322
 GameObject:

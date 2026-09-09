@@ -237,6 +237,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2455700254074999848}
   - component: {fileID: 8351061648956666568}
+  - component: {fileID: 3238472036262370434}
   m_Layer: 10
   m_Name: GO_Hunter_Prefab
   m_TagString: Untagged
@@ -281,3 +282,24 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &3238472036262370434
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8556675450026751209}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ed1dcf1e401ccf3498ac2452f283b34b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FSM
+  _speed: 5
+  _patrolData:
+    Waypoints:
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    Transform: {fileID: 2455700254074999848}
+    WaypointCheckDistance: 0.1

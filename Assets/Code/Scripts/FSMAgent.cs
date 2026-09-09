@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class FSM : MonoBehaviour
+public class FSMAgent : Agent
 {
     [SerializeField] public float _speed = 10f;
     [SerializeField] private PatrolData _patrolData;
