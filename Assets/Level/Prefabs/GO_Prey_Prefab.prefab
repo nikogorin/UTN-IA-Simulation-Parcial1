@@ -127,6 +127,7 @@ GameObject:
   - component: {fileID: 6521380509356918531}
   - component: {fileID: 2165593959663399721}
   - component: {fileID: 9122355600853429752}
+  - component: {fileID: 4002552937222986193}
   m_Layer: 11
   m_Name: GO_Prey_Prefab
   m_TagString: Untagged
@@ -148,6 +149,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3144995808700264139}
+  - {fileID: 6080200505038899982}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!135 &6521380509356918531
@@ -197,7 +199,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PreyAgent
   speed: 5
-  maxAcceleration: 2
+  maxAcceleration: 3
   arrivalThreshold: 0.2
   slowingDistance: 2
   separationDistance: 2
@@ -219,7 +221,21 @@ MonoBehaviour:
     m_Bits: 4096
   baitDetectionRadius: 15
   eatingDistance: 0.7
+  eatingTime: 2
   drawGizmos: 0
+--- !u!114 &4002552937222986193
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3819430864234475397}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b3ae45ea11dbd2f4b92c9b4a8ed599e1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PreyStateUI
+  stateText: {fileID: 4869424352196650152}
 --- !u!1 &5828972906789951322
 GameObject:
   m_ObjectHideFlags: 0
@@ -332,3 +348,76 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!1001 &519691416028699508
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 7037530280026410820}
+    m_Modifications:
+    - target: {fileID: 3781380157219798992, guid: c3301d920d254614f90d108547c30a0f, type: 3}
+      propertyPath: m_Name
+      value: StateUI
+      objectReference: {fileID: 0}
+    - target: {fileID: 6005381550408683642, guid: c3301d920d254614f90d108547c30a0f, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6005381550408683642, guid: c3301d920d254614f90d108547c30a0f, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6005381550408683642, guid: c3301d920d254614f90d108547c30a0f, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6005381550408683642, guid: c3301d920d254614f90d108547c30a0f, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6005381550408683642, guid: c3301d920d254614f90d108547c30a0f, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6005381550408683642, guid: c3301d920d254614f90d108547c30a0f, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6005381550408683642, guid: c3301d920d254614f90d108547c30a0f, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6005381550408683642, guid: c3301d920d254614f90d108547c30a0f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6005381550408683642, guid: c3301d920d254614f90d108547c30a0f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6005381550408683642, guid: c3301d920d254614f90d108547c30a0f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: c3301d920d254614f90d108547c30a0f, type: 3}
+--- !u!114 &4869424352196650152 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4946635952541188060, guid: c3301d920d254614f90d108547c30a0f, type: 3}
+  m_PrefabInstance: {fileID: 519691416028699508}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
+--- !u!4 &6080200505038899982 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6005381550408683642, guid: c3301d920d254614f90d108547c30a0f, type: 3}
+  m_PrefabInstance: {fileID: 519691416028699508}
+  m_PrefabAsset: {fileID: 0}

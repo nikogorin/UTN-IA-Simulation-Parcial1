@@ -28,7 +28,10 @@ public class PreyAgent : SteeringAgent
     [Tooltip("Radius within which the agent will detect bait.")]
     [SerializeField] private float baitDetectionRadius = 15f;
 
+    [Header("Eat Settings")]
     [SerializeField, Range(0, 1)] private float eatingDistance = 0.7f;
+    [SerializeField, Min(0)] private float eatingTime = 2f;
+
     [Header("Gizmos")]
     [SerializeField] private bool drawGizmos = false;
 
@@ -36,6 +39,18 @@ public class PreyAgent : SteeringAgent
     private Agent _hunterAgent;
     private Bait _targetBait;
     private PreyState _currentState;
+    private HealthAgent _healthAgent;
+    private float _currentEatingTime;
+    private PreyStateUI _stateUI;
+
+    protected override void Awake()
+    {
+        base.Awake();
+        _stateUI = GetComponent<PreyStateUI>();
+        _healthAgent = GetComponent<HealthAgent>();
+        
+        _currentEatingTime = 0;
+    }
 
     private void Update()
     {
@@ -44,6 +59,7 @@ public class PreyAgent : SteeringAgent
         DetectBait();
 
         UpdateState();
+        UpdateEatingTime();
 
         Vector3 steering = CalculateSteeringBehavior();
         ApplySteering(steering);
@@ -53,22 +69,40 @@ public class PreyAgent : SteeringAgent
 
     private void UpdateState()
     {
-        if(_currentState == PreyState.GoingToBait && _targetBait != null && Vector3.Distance(transform.position, _targetBait.transform.position) <= eatingDistance)
+        if((_currentState == PreyState.GoingToBait && _targetBait != null && Vector3.Distance(transform.position, _targetBait.transform.position) <= eatingDistance) 
+            || (_currentEatingTime != 0))
         {
             _currentState = PreyState.Eating;
             Debug.Log($"{PreyState.Eating}");
-        } 
-        else if (_targetBait != null)
+        }
+        else if (_targetBait != null && _currentEatingTime == 0)
         {
             _currentState = PreyState.GoingToBait;
             Debug.Log($"{PreyState.GoingToBait}");
-        } 
+        }
         else if (_hunterAgent != null)
         {
             _currentState = PreyState.Evading;
-        } 
+        }
         else
             _currentState = PreyState.Flocking;
+
+        _stateUI.SetState(_currentState);
+    }
+
+    private void UpdateEatingTime()
+    {
+        if (_currentState != PreyState.Eating)
+            return;
+
+        _currentEatingTime += Time.deltaTime;
+        if(_currentEatingTime > eatingTime)
+        {
+            _targetBait.Consume();
+            //_wasEating = true;
+            _currentEatingTime = 0;
+            _currentState = PreyState.Flocking;
+        }
     }
 
     private void DetectFlock()
@@ -119,7 +153,6 @@ public class PreyAgent : SteeringAgent
                 return; // Exit after finding the first bait
             }
         }
-        
     }
 
     private Vector3 CalculateSteeringBehavior()
@@ -127,12 +160,13 @@ public class PreyAgent : SteeringAgent
         switch(_currentState)
         {
             case PreyState.Flocking:
+                StartMoving();
                 return Flocking(_flockAgents);
             case PreyState.GoingToBait:
                 return Arrive(_targetBait.transform.position);
             case PreyState.Eating:
-                _velocity = Vector3.zero;
-                return CalculateSteering(Vector3.zero);
+                StopMoving();
+                return Vector3.zero;
             case PreyState.Evading:
                 return Evade(_hunterAgent);
             default:

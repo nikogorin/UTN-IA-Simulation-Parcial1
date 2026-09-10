@@ -2,13 +2,13 @@ using UnityEngine;
 
 public class PatrolPingPongState : State
 {
-    private readonly FSMAgent _agent;
+    private readonly HunterAgent _agent;
     private readonly PatrolData _patrolData;
 
     private int _currentWaypointIndex = 0;
     private int _patrolDirection = 1;
 
-    public PatrolPingPongState(FSMAgent fSM, PatrolData patrolData, StateMachine stateMachine) : base(stateMachine)
+    public PatrolPingPongState(HunterAgent fSM, PatrolData patrolData, StateMachine stateMachine) : base(stateMachine)
     {
         _agent = fSM;
         _patrolData = patrolData;
@@ -50,6 +50,6 @@ public class PatrolPingPongState : State
 
         var direction = (nextWaypoint.position - _patrolData.Transform.position).normalized;
 
-        _patrolData.Transform.position += _agent._speed * Time.deltaTime * direction;
+        _patrolData.Transform.position += _agent.Speed * Time.deltaTime * direction;
     }
 }

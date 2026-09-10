@@ -32,10 +32,9 @@ public class SteeringAgent : Agent
     [Tooltip("Weight applied to the cohesion steering behavior.")]
     [SerializeField, Range(0f, 3f)] private float cohesionWeight = 1f;
 
-    private void Awake()
+    protected virtual void Awake()
     {
-        Vector3 randomDirection = new Vector3(Random.Range(-1f, 1f), 0f, Random.Range(-1f, 1f));
-        _velocity = randomDirection.normalized * speed;
+        StartMoving();
     }
 
     protected void Move()
@@ -188,6 +187,20 @@ public class SteeringAgent : Agent
         return CalculateSeparation(agents, separationDistance) * separationWeight
             + CalculateAlignment(agents, alignmentDistance) * alignmentWeight
             + CalculateCohesion(agents, cohesionDistance) * cohesionWeight;
+    }
+
+    protected void StartMoving()
+    {
+        if (_velocity.sqrMagnitude < 0.001f)
+        {
+            Vector3 randomDirection = new Vector3(Random.Range(-1f, 1f), 0f, Random.Range(-1f, 1f)).normalized;
+            _velocity = randomDirection * speed;
+        }
+    }
+
+    protected void StopMoving()
+    {
+        _velocity = Vector3.zero;
     }
 
     private Vector3 CalculateFuturePosition(Agent target)

@@ -2,14 +2,14 @@ using UnityEngine;
 
 public class PatrolLoopState : State
 {
-    private readonly FSMAgent _agent;
+    private readonly HunterAgent _agent;
     private readonly PatrolData _patrolData;
 
     private int _currentWaypointIndex = 0;
     private float _patrolTimer = 0f;
     private float _patrolDuration = 5f; // Duration to stay in patrol state before switching
 
-    public PatrolLoopState(FSMAgent fSM, PatrolData patrolData, StateMachine stateMachine) : base(stateMachine)
+    public PatrolLoopState(HunterAgent fSM, PatrolData patrolData, StateMachine stateMachine) : base(stateMachine)
     {
         _agent = fSM;
         _patrolData = patrolData;
@@ -26,7 +26,7 @@ public class PatrolLoopState : State
         _patrolTimer += Time.deltaTime;
         if(_patrolTimer >= _patrolDuration)
         {
-            _stateMachine.ChangeState(StateType.Idle);
+            _stateMachine.ChangeState(HunterState.Idle);
         }
     }
 
@@ -46,7 +46,7 @@ public class PatrolLoopState : State
 
         var direction = (nextWaypoint.position - _patrolData.Transform.position).normalized;
 
-        _patrolData.Transform.position += _agent._speed * Time.deltaTime * direction;
+        _patrolData.Transform.position += _agent.Speed * Time.deltaTime * direction;
         _patrolData.Transform.forward = direction;
     }
 }

@@ -32,7 +32,7 @@ public class PlacingBaitState : State
             if(!BaitManager.Instance.TrySpawnBait(_transform.position))
                 Debug.Log("Failed to spawn bait.");
 
-            _stateMachine.ChangeState(StateType.Patrol);
+            _stateMachine.ChangeState(HunterState.Patrol);
         }
     }
 }

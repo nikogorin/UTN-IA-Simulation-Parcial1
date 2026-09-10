@@ -1,3 +1,10 @@
+public enum HunterState
+{
+    Idle,
+    Patrol,
+    PlacingBait,
+}
+
 public abstract class State
 {
     protected StateMachine _stateMachine;

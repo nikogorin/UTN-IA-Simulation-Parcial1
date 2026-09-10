@@ -28,7 +28,7 @@ public class IdleState : State
 
         if (_timerToChange <= _idleTime)
         {
-            _stateMachine.ChangeState(StateType.PlacingBait);
+            _stateMachine.ChangeState(HunterState.PlacingBait);
         }
     }
 }

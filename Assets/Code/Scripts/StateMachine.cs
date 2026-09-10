@@ -4,8 +4,8 @@ using System.Collections.Generic;
 public class StateMachine
 {
     private Dictionary<Enum, State> _states = new();
-
     public State CurrentState { get; private set; }
+    public Action<Enum> OnStateChanged { get; set; }
 
     public void RegisterState(Enum key, State value)
     {
@@ -20,8 +20,12 @@ public class StateMachine
             return;
 
         CurrentState?.Exit();
+        
         CurrentState = newState;
+        
         CurrentState?.Enter();
+
+        OnStateChanged?.Invoke(key);
     }
 
     public void Update()
