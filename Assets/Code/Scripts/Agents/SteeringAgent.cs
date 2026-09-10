@@ -8,7 +8,7 @@ public class SteeringAgent : Agent
         Seek, Flee, Arrive, Pursuit, Evade, Flocking
     }
 
-    [Header("Stats")]
+    [Header("Movement Stats")]
     [Tooltip("Maximum speed the agent can move.")]
     [SerializeField] private float speed = 5f;
     [Tooltip("Maximum acceleration the agent can apply to change its velocity.")]
@@ -37,7 +37,7 @@ public class SteeringAgent : Agent
         StartMoving();
     }
 
-    protected void Move()
+    public void Move()
     {
         transform.position += _velocity * Time.deltaTime;
         if (_velocity.sqrMagnitude > 0.001f)
@@ -46,7 +46,7 @@ public class SteeringAgent : Agent
         transform.position = Bounds.Instance.OutOfBounds(transform.position);
     }
 
-    protected void ApplySteering(Vector3 steering)
+    public void ApplySteering(Vector3 steering)
     {
         _velocity += steering;
         _velocity = Vector3.ClampMagnitude(_velocity, speed);
@@ -115,7 +115,7 @@ public class SteeringAgent : Agent
         return Seek(desired);
     }
 
-    protected Vector3 CalculateSteering(Vector3 desiredVelocity)
+    private Vector3 CalculateSteering(Vector3 desiredVelocity)
     {
         // Steering = Desired Velocity - Current Velocity
         Vector3 steering = desiredVelocity - _velocity;
@@ -189,7 +189,7 @@ public class SteeringAgent : Agent
             + CalculateCohesion(agents, cohesionDistance) * cohesionWeight;
     }
 
-    protected void StartMoving()
+    public void StartMoving()
     {
         if (_velocity.sqrMagnitude < 0.001f)
         {

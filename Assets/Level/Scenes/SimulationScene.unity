@@ -129,7 +129,7 @@ GameObject:
   m_Component:
   - component: {fileID: 160474853}
   m_Layer: 0
-  m_Name: GO_Waypoint_4
+  m_Name: GO_Waypoint_3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -158,9 +158,17 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3713064436348761305, guid: a5dc8996df1fc184db082414a5502e43, type: 3}
+      propertyPath: m_AdditionalShaderChannelsFlag
+      value: 25
+      objectReference: {fileID: 0}
     - target: {fileID: 3819430864234475397, guid: a5dc8996df1fc184db082414a5502e43, type: 3}
       propertyPath: m_Name
       value: GO_Prey_5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4869424352196650152, guid: a5dc8996df1fc184db082414a5502e43, type: 3}
+      propertyPath: m_hasFontAssetChanged
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7037530280026410820, guid: a5dc8996df1fc184db082414a5502e43, type: 3}
       propertyPath: m_LocalPosition.x
@@ -290,10 +298,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 9122355600853429752, guid: a5dc8996df1fc184db082414a5502e43, type: 3}
-      propertyPath: drawGizmos
-      value: 0
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -348,19 +352,19 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3238472036262370434, guid: 7f8c9881dad404b488242ab30a006a8f, type: 3}
-      propertyPath: '_patrolData.Waypoints.Array.data[0]'
+      propertyPath: 'patrolData.Waypoints.Array.data[0]'
       value: 
       objectReference: {fileID: 2022170042}
     - target: {fileID: 3238472036262370434, guid: 7f8c9881dad404b488242ab30a006a8f, type: 3}
-      propertyPath: '_patrolData.Waypoints.Array.data[1]'
+      propertyPath: 'patrolData.Waypoints.Array.data[1]'
       value: 
       objectReference: {fileID: 1226601453}
     - target: {fileID: 3238472036262370434, guid: 7f8c9881dad404b488242ab30a006a8f, type: 3}
-      propertyPath: '_patrolData.Waypoints.Array.data[2]'
+      propertyPath: 'patrolData.Waypoints.Array.data[2]'
       value: 
       objectReference: {fileID: 1687061644}
     - target: {fileID: 3238472036262370434, guid: 7f8c9881dad404b488242ab30a006a8f, type: 3}
-      propertyPath: '_patrolData.Waypoints.Array.data[3]'
+      propertyPath: 'patrolData.Waypoints.Array.data[3]'
       value: 
       objectReference: {fileID: 160474853}
     - target: {fileID: 8556675450026751209, guid: 7f8c9881dad404b488242ab30a006a8f, type: 3}
@@ -458,13 +462,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 579114218}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.1350128, y: -0, z: -0, w: 0.9908439}
-  m_LocalPosition: {x: 0, y: 29.4, z: -86.5}
+  m_LocalRotation: {x: 0.3936943, y: -0, z: -0, w: 0.9192415}
+  m_LocalPosition: {x: 0, y: 44.04, z: -49.01}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 15.519, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 46.369, y: 0, z: 0}
 --- !u!114 &579114222
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -548,9 +552,17 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3713064436348761305, guid: a5dc8996df1fc184db082414a5502e43, type: 3}
+      propertyPath: m_AdditionalShaderChannelsFlag
+      value: 25
+      objectReference: {fileID: 0}
     - target: {fileID: 3819430864234475397, guid: a5dc8996df1fc184db082414a5502e43, type: 3}
       propertyPath: m_Name
       value: GO_Prey_4
+      objectReference: {fileID: 0}
+    - target: {fileID: 4869424352196650152, guid: a5dc8996df1fc184db082414a5502e43, type: 3}
+      propertyPath: m_hasFontAssetChanged
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7037530280026410820, guid: a5dc8996df1fc184db082414a5502e43, type: 3}
       propertyPath: m_LocalPosition.x
@@ -605,9 +617,17 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3713064436348761305, guid: a5dc8996df1fc184db082414a5502e43, type: 3}
+      propertyPath: m_AdditionalShaderChannelsFlag
+      value: 25
+      objectReference: {fileID: 0}
     - target: {fileID: 3819430864234475397, guid: a5dc8996df1fc184db082414a5502e43, type: 3}
       propertyPath: m_Name
       value: GO_Prey_1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4869424352196650152, guid: a5dc8996df1fc184db082414a5502e43, type: 3}
+      propertyPath: m_hasFontAssetChanged
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6210069882928082833, guid: a5dc8996df1fc184db082414a5502e43, type: 3}
       propertyPath: drawGizmos
@@ -674,9 +694,17 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3713064436348761305, guid: a5dc8996df1fc184db082414a5502e43, type: 3}
+      propertyPath: m_AdditionalShaderChannelsFlag
+      value: 25
+      objectReference: {fileID: 0}
     - target: {fileID: 3819430864234475397, guid: a5dc8996df1fc184db082414a5502e43, type: 3}
       propertyPath: m_Name
       value: GO_Prey_2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4869424352196650152, guid: a5dc8996df1fc184db082414a5502e43, type: 3}
+      propertyPath: m_hasFontAssetChanged
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7037530280026410820, guid: a5dc8996df1fc184db082414a5502e43, type: 3}
       propertyPath: m_LocalPosition.x
@@ -782,7 +810,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1226601453}
   m_Layer: 0
-  m_Name: GO_Waypoint_2
+  m_Name: GO_Waypoint_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1048,7 +1076,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1687061644}
   m_Layer: 0
-  m_Name: GO_Waypoint_3
+  m_Name: GO_Waypoint_2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1077,9 +1105,17 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3713064436348761305, guid: a5dc8996df1fc184db082414a5502e43, type: 3}
+      propertyPath: m_AdditionalShaderChannelsFlag
+      value: 25
+      objectReference: {fileID: 0}
     - target: {fileID: 3819430864234475397, guid: a5dc8996df1fc184db082414a5502e43, type: 3}
       propertyPath: m_Name
       value: GO_Prey_3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4869424352196650152, guid: a5dc8996df1fc184db082414a5502e43, type: 3}
+      propertyPath: m_hasFontAssetChanged
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7037530280026410820, guid: a5dc8996df1fc184db082414a5502e43, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1167,7 +1203,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2022170042}
   m_Layer: 0
-  m_Name: GO_Waypoint_1
+  m_Name: GO_Waypoint_0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

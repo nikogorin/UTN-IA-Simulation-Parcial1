@@ -5,6 +5,15 @@ public enum HunterState
     PlacingBait,
 }
 
+public enum PreyState
+{
+    Flocking,
+    GoingToBait,
+    Eating,
+    Evading,
+    Dead
+}
+
 public abstract class State
 {
     protected StateMachine _stateMachine;

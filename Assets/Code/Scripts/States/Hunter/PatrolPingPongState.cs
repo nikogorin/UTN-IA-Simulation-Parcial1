@@ -8,24 +8,26 @@ public class PatrolPingPongState : State
     private int _currentWaypointIndex = 0;
     private int _patrolDirection = 1;
 
-    public PatrolPingPongState(HunterAgent fSM, PatrolData patrolData, StateMachine stateMachine) : base(stateMachine)
+    public PatrolPingPongState(HunterAgent agent, PatrolData patrolData, StateMachine stateMachine) : base(stateMachine)
     {
-        _agent = fSM;
+        _agent = agent;
         _patrolData = patrolData;
     }
     public override void Enter()
     {
-        //Debug.Log("Entering PatrolPingPong State");
+        base.Enter();
     }
 
     public override void Update()
     {
         PatrolPingPong();
+        // Is not use, need to be added the changeState logic
+        // _stateMachine.ChangeState(HunterState.Idle);
     }
 
     public override void Exit()
     {
-        //Debug.Log("Exiting PatrolPingPong State");
+        base .Exit();
     }
 
     private void PatrolPingPong()
@@ -48,8 +50,8 @@ public class PatrolPingPongState : State
             }
         }
 
-        var direction = (nextWaypoint.position - _patrolData.Transform.position).normalized;
-
-        _patrolData.Transform.position += _agent.Speed * Time.deltaTime * direction;
+        Vector3 steering = _agent.GetSeekSteering(nextWaypoint);
+        _agent.ApplySteering(steering);
+        _agent.Move();
     }
 }

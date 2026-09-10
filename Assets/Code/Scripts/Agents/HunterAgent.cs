@@ -1,16 +1,15 @@
 using UnityEngine;
 
-public class HunterAgent : Agent
+public class HunterAgent : SteeringAgent
 {
-    [SerializeField] private float speed = 10f;
     [SerializeField] private PatrolData patrolData;
 
     private StateMachine _stateMachine;
     private HunterStateUI _stateUI;
-    public float Speed => speed;
 
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         _stateUI = GetComponent<HunterStateUI>();
         _stateMachine = new StateMachine();
         _stateMachine.OnStateChanged += _stateUI.SetState;
@@ -35,5 +34,10 @@ public class HunterAgent : Agent
     {
         if(_stateUI != null)
             _stateMachine.OnStateChanged -= _stateUI.SetState;
+    }
+
+    public Vector3 GetSeekSteering(Transform waypoint)
+    {
+        return Seek(waypoint.position);
     }
 }
