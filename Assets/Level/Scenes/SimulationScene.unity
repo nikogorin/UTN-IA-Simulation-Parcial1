@@ -298,6 +298,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 9122355600853429752, guid: a5dc8996df1fc184db082414a5502e43, type: 3}
+      propertyPath: drawGizmos
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -350,6 +354,22 @@ PrefabInstance:
     - target: {fileID: 2455700254074999848, guid: 7f8c9881dad404b488242ab30a006a8f, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3238472036262370434, guid: 7f8c9881dad404b488242ab30a006a8f, type: 3}
+      propertyPath: spawnPoint
+      value: 
+      objectReference: {fileID: 627813374}
+    - target: {fileID: 3238472036262370434, guid: 7f8c9881dad404b488242ab30a006a8f, type: 3}
+      propertyPath: baitCooldown
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 3238472036262370434, guid: 7f8c9881dad404b488242ab30a006a8f, type: 3}
+      propertyPath: maxAcceleration
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 3238472036262370434, guid: 7f8c9881dad404b488242ab30a006a8f, type: 3}
+      propertyPath: timeBetweenAttacks
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 3238472036262370434, guid: 7f8c9881dad404b488242ab30a006a8f, type: 3}
       propertyPath: 'patrolData.Waypoints.Array.data[0]'
@@ -544,6 +564,11 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &627813374 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7764649897672465081, guid: 7f8c9881dad404b488242ab30a006a8f, type: 3}
+  m_PrefabInstance: {fileID: 332417041}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &660695235
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -603,6 +628,10 @@ PrefabInstance:
     - target: {fileID: 7037530280026410820, guid: a5dc8996df1fc184db082414a5502e43, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9122355600853429752, guid: a5dc8996df1fc184db082414a5502e43, type: 3}
+      propertyPath: eatingDistance
+      value: 0.7
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1020,6 +1049,52 @@ MonoBehaviour:
   m_ShadowLayerMask: 1
   m_RenderingLayers: 1
   m_ShadowRenderingLayers: 1
+--- !u!1 &1633419713
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1633419715}
+  - component: {fileID: 1633419714}
+  m_Layer: 0
+  m_Name: PreyManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1633419714
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1633419713}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2eecec64e663b5a43993971134674c2b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PreyManager
+  preyPrefab: {fileID: 9122355600853429752, guid: a5dc8996df1fc184db082414a5502e43, type: 3}
+  respawnTime: 20
+--- !u!4 &1633419715
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1633419713}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.76562, y: 0, z: -13.61479}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1633911264
 GameObject:
   m_ObjectHideFlags: 0
@@ -1247,3 +1322,4 @@ SceneRoots:
   - {fileID: 160474853}
   - {fileID: 183593603}
   - {fileID: 1633911266}
+  - {fileID: 1633419715}

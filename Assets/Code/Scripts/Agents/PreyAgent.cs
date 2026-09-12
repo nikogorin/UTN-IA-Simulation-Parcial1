@@ -35,6 +35,7 @@ public class PreyAgent : SteeringAgent
     private Bait _targetBait;
     private PreyStateUI _stateUI;
     private StateMachine _stateMachine;
+    private bool _gathered;
 
     public float CurrentHealth { get; private set; }
     public PreyState CurrentState { get; private set; }
@@ -42,7 +43,9 @@ public class PreyAgent : SteeringAgent
     public bool IsBaitAssigned => _targetBait != null;
     public bool IsHunterDetected => _hunterAgent != null;
     public bool IsCloseToBait => _targetBait != null ? Vector3.Distance(transform.position, _targetBait.transform.position) <= eatingDistance : false;
-    public float EatingTime => eatingDistance;
+    public float EatingTime => eatingTime;
+    public bool IsGathered => _gathered;
+    public bool CanTakeBait => CurrentState == PreyState.Flocking;
 
     protected override void Awake()
     {
@@ -56,11 +59,13 @@ public class PreyAgent : SteeringAgent
         EvadingState evadingState = new(_stateMachine, this);
         GoingToBaitState goingToBaitState = new(_stateMachine, this);
         EatingState eatingState = new(_stateMachine, this);
+        DeadState deadState = new(_stateMachine, this);
 
         _stateMachine.RegisterState(PreyState.Flocking, flockingState);
         _stateMachine.RegisterState(PreyState.Evading, evadingState);
         _stateMachine.RegisterState(PreyState.GoingToBait, goingToBaitState);
         _stateMachine.RegisterState(PreyState.Eating, eatingState);
+        _stateMachine.RegisterState(PreyState.Dead, deadState);
 
         _stateMachine.ChangeState(PreyState.Flocking);
 
@@ -99,11 +104,6 @@ public class PreyAgent : SteeringAgent
         return Evade(_hunterAgent);
     }
 
-    public void StopSteering()
-    {
-        StopMoving();
-    }
-
     public void ConsumeTargetBait()
     {
         if (_targetBait == null)
@@ -138,10 +138,10 @@ public class PreyAgent : SteeringAgent
         Collider[] hunterColliders = Physics.OverlapSphere(transform.position, hunterDetectionRadius, hunterLayer); // No need to use NonAlloc version since we are not concerned about performance here
         foreach (var collider in hunterColliders)
         {
-            Agent agent = collider.GetComponent<Agent>();
-            if (agent != null && agent != this)
+            HunterAgent hunterAgent = collider.GetComponent<HunterAgent>();
+            if (hunterAgent != null && hunterAgent != this)
             {
-                _hunterAgent = agent;
+                _hunterAgent = hunterAgent;
                 //Debug.Log($"Detected hunter agent at position: {_hunterAgent.transform.position}");
                 return; // Exit after finding the first hunter
             }
@@ -152,6 +152,9 @@ public class PreyAgent : SteeringAgent
     private void DetectBait()
     {
         if (_targetBait != null)
+            return;
+
+        if (!CanTakeBait)
             return;
 
         Collider[] baitColliders = Physics.OverlapSphere(transform.position, baitDetectionRadius, baitLayer); // No need to use NonAlloc version since we are not concerned about performance here
@@ -168,17 +171,16 @@ public class PreyAgent : SteeringAgent
         }
     }
 
-    private void TakeDamage(float damage)
+    public void TakeDamage(float damage)
     {
         if (IsDead)
             return;
 
         CurrentHealth -= damage;
         CurrentHealth = Mathf.Clamp(CurrentHealth, 0f, _maxHealth);
-
     }
 
-    private void ReleaseBait() //nned to be applied when the prey died before reaching or eating the bait
+    public void ReleaseBait()
     {
         if (_targetBait == null)
             return;

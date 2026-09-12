@@ -9,19 +9,15 @@ public class GoingToBaitState : State
         _agent = agent;
     }
 
-    public override void Enter()
-    {
-        base.Enter();
-    }
-
-    public override void Exit()
-    {
-        base.Exit();
-    }
-
     public override void Update()
     {
-        if(!_agent.IsBaitAssigned)
+        if (_agent.IsDead)
+        {
+            _stateMachine.ChangeState(PreyState.Dead);
+            return;
+        }
+
+        if (!_agent.IsBaitAssigned)
         {
             _stateMachine.ChangeState(PreyState.Flocking);
             return;

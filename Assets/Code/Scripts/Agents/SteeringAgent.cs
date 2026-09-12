@@ -168,7 +168,7 @@ public class SteeringAgent : Agent
         return steering;
     }
 
-    protected Vector3 Persuit(Agent target)
+    protected Vector3 Pursuit(Agent target)
     {
         Vector3 futurePosition = CalculateFuturePosition(target);
 
@@ -198,7 +198,7 @@ public class SteeringAgent : Agent
         }
     }
 
-    protected void StopMoving()
+    public void StopMoving()
     {
         _velocity = Vector3.zero;
     }

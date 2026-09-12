@@ -10,16 +10,17 @@ public class EvadingState : State
 
     public override void Enter()
     {
-        base.Enter();
-    }
-
-    public override void Exit()
-    {
-        base.Exit();
+        _agent.ReleaseBait();
     }
 
     public override void Update()
     {
+        if (_agent.IsDead)
+        {
+            _stateMachine.ChangeState(PreyState.Dead);
+            return;
+        }
+
         if (!_agent.IsHunterDetected)
         {
             _stateMachine.ChangeState(PreyState.Flocking);

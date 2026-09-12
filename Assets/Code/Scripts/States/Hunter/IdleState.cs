@@ -4,10 +4,11 @@ public class IdleState : State
 {
     private float _idleTime = 0f;
     private readonly float _timerToChange = 3f;
+    private HunterAgent _agent;
 
-    public IdleState(StateMachine stateMachine) : base(stateMachine)
+    public IdleState(HunterAgent agent, StateMachine stateMachine) : base(stateMachine)
     {
-
+        _agent = agent;
     }
 
     public override void Enter()
@@ -15,13 +16,14 @@ public class IdleState : State
         _idleTime = 0f;
     }
 
-    public override void Exit()
-    {
-
-    }
-
     public override void Update()
     {
+        if(_agent.CanAttack)
+        {
+            _stateMachine.ChangeState(HunterState.Attacking);
+            return;
+        }
+
         _idleTime += Time.deltaTime;
 
         if (_timerToChange <= _idleTime)

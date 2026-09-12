@@ -8,22 +8,31 @@ public class Bait : MonoBehaviour
 
     public void Consume()
     {
+
         Destroyed?.Invoke(this);
         Destroy(gameObject);
     }
 
-    public bool TryAssignAgent(Agent agent)
+    public bool TryAssignAgent(PreyAgent agent)
     {
-        if (AssignedAgent != null)
+        Debug.Log($"TryAssign {agent.name} - Current: {AssignedAgent?.name}");
+
+        if (AssignedAgent != null) 
+            return false;
+
+        if (!agent.CanTakeBait)
             return false;
 
         AssignedAgent = agent;
+        
         return true;
     }
 
-    public void ReleaseAgent(Agent agent)
+    public void ReleaseAgent(PreyAgent agent)
     {
-        if(AssignedAgent == agent)
+        Debug.Log($"Release {agent.name} - Current: {AssignedAgent?.name}");
+
+        if (AssignedAgent == agent)
             AssignedAgent = null;
     }
 }

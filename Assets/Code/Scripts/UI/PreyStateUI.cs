@@ -18,7 +18,7 @@ public class PreyStateUI : StateUI
                 PreyState.GoingToBait => Color.yellow,
                 PreyState.Eating => Color.cyan,
                 PreyState.Evading => Color.red,
-                PreyState.Dead => Color.gray,
+                PreyState.Dead => Color.black,
                 _ => Color.white
             };
         }

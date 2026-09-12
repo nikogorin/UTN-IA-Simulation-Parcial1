@@ -13,21 +13,12 @@ public class PatrolPingPongState : State
         _agent = agent;
         _patrolData = patrolData;
     }
-    public override void Enter()
-    {
-        base.Enter();
-    }
 
     public override void Update()
     {
         PatrolPingPong();
         // Is not use, need to be added the changeState logic
         // _stateMachine.ChangeState(HunterState.Idle);
-    }
-
-    public override void Exit()
-    {
-        base .Exit();
     }
 
     private void PatrolPingPong()

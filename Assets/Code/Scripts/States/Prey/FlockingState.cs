@@ -14,11 +14,6 @@ public class FlockingState : State
         _agent.StartMoving();
     }
 
-    public override void Exit()
-    {
-        base.Exit();
-    }
-
     public override void Update()
     {
         Vector3 steering = _agent.GetFlockingSteering();

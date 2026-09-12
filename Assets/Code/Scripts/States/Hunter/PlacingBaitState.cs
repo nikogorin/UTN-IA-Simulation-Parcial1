@@ -2,34 +2,30 @@ using UnityEngine;
 
 public class PlacingBaitState : State
 {
-    private float _placingBaitTime = 0f;
-    private readonly float _timerToChange = 0.5f;
-    private readonly Transform _transform;
+    private float _currentTime = 0f;
+    private readonly HunterAgent _agent;
     
-    public PlacingBaitState(Transform transform, StateMachine stateMachine) : base(stateMachine)
+    public PlacingBaitState(HunterAgent agent, StateMachine stateMachine) : base(stateMachine)
     {
-        _transform = transform;
+        _agent = agent;
     }
 
     public override void Enter()
     {
-        _placingBaitTime = 0f;
-    }
-
-    public override void Exit()
-    {
-
+        _agent.StopMoving();
+        _currentTime = 0f;
     }
 
     public override void Update()
     {
-        _placingBaitTime += Time.deltaTime;
+        _currentTime += Time.deltaTime;
 
-        if (_timerToChange <= _placingBaitTime)
+        if (_currentTime >= _agent.PlacingBaitDelay)
         {
-            if(!BaitManager.Instance.TrySpawnBait(_transform.position))
+            if(!BaitManager.Instance.TrySpawnBait(_agent.transform.position))
                 Debug.Log("Failed to spawn bait.");
 
+            _agent.ResetBaitCooldown();
             _stateMachine.ChangeState(HunterState.Patrol);
             return;
         }

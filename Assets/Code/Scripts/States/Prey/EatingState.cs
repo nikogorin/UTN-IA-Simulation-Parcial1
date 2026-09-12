@@ -12,16 +12,17 @@ public class EatingState : State
     public override void Enter()
     {
         _currentEatingTime = 0;
-        _agent.StopSteering();
-    }
-
-    public override void Exit()
-    {
-        base.Exit();
+        _agent.StopMoving();
     }
 
     public override void Update()
     {
+        if (_agent.IsDead)
+        {
+            _stateMachine.ChangeState(PreyState.Dead);
+            return;
+        }
+
         _currentEatingTime += Time.deltaTime;
         if (_currentEatingTime >= _agent.EatingTime)
         {

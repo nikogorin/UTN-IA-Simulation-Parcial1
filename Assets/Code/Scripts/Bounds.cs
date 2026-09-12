@@ -8,6 +8,9 @@ public class Bounds : MonoBehaviour
     [SerializeField] private float width = 10f;
     [SerializeField] private bool drawGizmos = true;
 
+    public float LimitHeight => height / 2;
+    public float LimitWidth => width / 2;
+
     public void Awake()
     {
         if(Instance == null)
@@ -34,6 +37,12 @@ public class Bounds : MonoBehaviour
             newPosition.z = height / 2;
 
         return newPosition;
+    }
+
+    public Vector3 GetRandomPosition()
+    {
+        Vector3 rndPosition = new(Random.Range(-LimitWidth, LimitWidth), 0f, Random.Range(-LimitHeight, LimitHeight));
+        return rndPosition;
     }
 
 

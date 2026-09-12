@@ -6,8 +6,8 @@ public class PatrolLoopState : State
     private readonly PatrolData _patrolData;
 
     private int _currentWaypointIndex = 0;
-    private float _patrolTimer = 0f;
-    private float _patrolDuration = 5f; // Duration to stay in patrol state before switching
+    //private float _patrolTimer = 0f;
+    //private float _patrolDuration = 5f; // Duration to stay in patrol state before switching
 
     public PatrolLoopState(HunterAgent agent, PatrolData patrolData, StateMachine stateMachine) : base(stateMachine)
     {
@@ -16,27 +16,34 @@ public class PatrolLoopState : State
     }
     public override void Enter()
     {
-        _patrolTimer = 0f;
+        //_patrolTimer = 0f;
     }
 
     public override void Update()
     {
-        PatrolLoop();
-        _patrolTimer += Time.deltaTime;
-        if(_patrolTimer >= _patrolDuration)
+        if (_agent.HasTargetDead)
         {
-            _stateMachine.ChangeState(HunterState.Idle);
+            _stateMachine.ChangeState(HunterState.GoingToGather);
             return;
         }
-    }
 
-    public override void Exit()
-    {
-        base.Exit();
+        if (_agent.CanPlaceBait)
+        {
+            _stateMachine.ChangeState(HunterState.PlacingBait);
+            return;
+        }
+
+        PatrolLoop();
     }
 
     private void PatrolLoop()
     {
+        if (_agent.CanAttack)
+        {
+            _stateMachine.ChangeState(HunterState.Attacking);
+            return;
+        }
+
         var currentWaypoint = _patrolData.Waypoints[_currentWaypointIndex];
 
         if (Vector3.Distance(currentWaypoint.position, _patrolData.Transform.position) <= _patrolData.WaypointCheckDistance)
