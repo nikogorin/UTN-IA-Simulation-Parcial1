@@ -1,10 +1,12 @@
 using System;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PreyStateUI : StateUI
 {
     [SerializeField] private TMP_Text stateText;
+    [SerializeField] private Image channelingSlideImage;
 
     public override void SetState(Enum state)
     {
@@ -22,5 +24,10 @@ public class PreyStateUI : StateUI
                 _ => Color.white
             };
         }
+    }
+
+    public void SetChannelingSlide(float amount)
+    {
+        channelingSlideImage.fillAmount = amount;
     }
 }

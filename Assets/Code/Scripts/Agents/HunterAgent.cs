@@ -31,41 +31,46 @@ public class HunterAgent : SteeringAgent
     private PreyAgent _preyAgentDead;
     private float _timeSinceLastAttack;
     private float _currentBaitCooldown;
+    private PlacingBaitState _placingBaitState;
+    private GatherState _gatherState;
 
     public bool CanAttack => HasTargetAlive && IsReadyToAttack;
     public bool HasTargetAlive => _preyAgentAlive != null;
     public bool HasTargetDead => _preyAgentDead != null;
     public bool IsReadyToAttack => _timeSinceLastAttack >= timeBetweenAttacks;
-    public float TargetDetectionRadius => targetDetectionRadius;
     public float MeleeAttackRadius => meleeAttackRadius;
     public float RangeAttackRadius => rangeAttackRadius;
     public float DistanceToTargetAlive => HasTargetAlive ? Vector3.Distance(this.transform.position, _preyAgentAlive.transform.position) : float.PositiveInfinity;
-    public float DistanceToTargetDead => HasTargetDead ? Vector3.Distance(this.transform.position, _preyAgentDead.transform.position) : float.PositiveInfinity;
     public float GatherDuration => gatherDuration;
     public bool IsCloseToGather => _preyAgentDead != null ? Vector3.Distance(transform.position, _preyAgentDead.transform.position) <= gatheringDistance : false;
     public float PlacingBaitDelay => placingBaitDelay;
     public bool CanPlaceBait => _currentBaitCooldown >= baitCooldown;
 
+    #region [Unity Events]
+    
     protected override void Awake()
     {
         base.Awake();
-        _stateUI = GetComponent<HunterStateUI>();
-        _stateMachine = new StateMachine();
-        _stateMachine.OnStateChanged += _stateUI.SetState;
 
-        //IdleState idleState = new(this, _stateMachine);
+        _stateMachine = new StateMachine();
+        _stateUI = GetComponent<HunterStateUI>();
+        _stateMachine.OnStateChanged += _stateUI.SetState;
+        _stateUI.SetChannelingSlide(0f);
+
         PatrolLoopState patrolState = new(this, patrolData, _stateMachine);
-        PlacingBaitState placingBaitState = new(this, _stateMachine);
+        _placingBaitState = new(this, _stateMachine);
         AttackState attackState = new(this, _stateMachine);
         GoingToGatherState goingToGatherState = new(this, _stateMachine);
-        GatherState gatherState = new(this, _stateMachine);
+        _gatherState = new(this, _stateMachine);
 
-        //_stateMachine.RegisterState(HunterState.Idle, idleState);
+        _placingBaitState.ChannelProgressChanged += _stateUI.SetChannelingSlide;
+        _gatherState.ChannelProgressChanged += _stateUI.SetChannelingSlide;
+
         _stateMachine.RegisterState(HunterState.Patrol, patrolState);
-        _stateMachine.RegisterState(HunterState.PlacingBait, placingBaitState);
+        _stateMachine.RegisterState(HunterState.PlacingBait, _placingBaitState);
         _stateMachine.RegisterState(HunterState.Attacking, attackState);
         _stateMachine.RegisterState(HunterState.GoingToGather, goingToGatherState);
-        _stateMachine.RegisterState(HunterState.Gathering, gatherState);
+        _stateMachine.RegisterState(HunterState.Gathering, _gatherState);
 
         _stateMachine.ChangeState(HunterState.Patrol);
 
@@ -82,15 +87,21 @@ public class HunterAgent : SteeringAgent
         UpdateBaitCooldown();
 
         _stateMachine.Update();
-
-        Debug.Log($"CanPlaceBait: {CanPlaceBait}");
     }
 
     private void OnDestroy()
     {
         if(_stateUI != null)
+        {
             _stateMachine.OnStateChanged -= _stateUI.SetState;
+            _placingBaitState.ChannelProgressChanged -= _stateUI.SetChannelingSlide;
+            _gatherState.ChannelProgressChanged -= _stateUI.SetChannelingSlide;
+        }
     }
+
+    #endregion
+
+    #region [Public Methods]
 
     public Vector3 GetSeekSteering(Transform waypoint)
     {
@@ -138,6 +149,10 @@ public class HunterAgent : SteeringAgent
         PreyManager.Instance.DespawnAndRespawn(_preyAgentDead);
         _preyAgentDead = null;
     }
+
+    #endregion
+
+    #region [Private Methods]
 
     private void DetectPreyAlive()
     {
@@ -188,13 +203,19 @@ public class HunterAgent : SteeringAgent
     private void UpdateAttackTime()
     {
         if(_timeSinceLastAttack <= timeBetweenAttacks)
+        {
             _timeSinceLastAttack += Time.deltaTime;
+            _stateUI.SetAttackCooldown(Mathf.Clamp01(_timeSinceLastAttack / timeBetweenAttacks));
+        }
     }
 
     private void UpdateBaitCooldown()
     {
         if (_currentBaitCooldown <= baitCooldown)
+        {
             _currentBaitCooldown += Time.deltaTime;
+            _stateUI.SetBaitCooldown(Mathf.Clamp01(_currentBaitCooldown / baitCooldown));
+        }       
     }
 
     private Vector3 CalculateProjectileTargetPosition(Agent target, float projectileSpeed)
@@ -219,4 +240,6 @@ public class HunterAgent : SteeringAgent
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, targetDetectionRadius);
     }
+
+    #endregion
 }

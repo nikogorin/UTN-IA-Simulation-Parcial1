@@ -32,10 +32,16 @@ public class SteeringAgent : Agent
     [Tooltip("Weight applied to the cohesion steering behavior.")]
     [SerializeField, Range(0f, 3f)] private float cohesionWeight = 1f;
 
+    #region [Unity Events]
+
     protected virtual void Awake()
     {
         StartMoving();
     }
+
+    #endregion
+
+    #region [Public Methods]
 
     public void Move()
     {
@@ -51,6 +57,24 @@ public class SteeringAgent : Agent
         _velocity += steering;
         _velocity = Vector3.ClampMagnitude(_velocity, speed);
     }
+
+    public void StartMoving()
+    {
+        if (_velocity.sqrMagnitude < 0.001f)
+        {
+            Vector3 randomDirection = new Vector3(Random.Range(-1f, 1f), 0f, Random.Range(-1f, 1f)).normalized;
+            _velocity = randomDirection * speed;
+        }
+    }
+
+    public void StopMoving()
+    {
+        _velocity = Vector3.zero;
+    }
+
+    #endregion
+
+    #region [Private Methods]
 
     private Vector3 CalculateSeparation(IEnumerable<Agent> agents, float distance)
     {
@@ -189,20 +213,6 @@ public class SteeringAgent : Agent
             + CalculateCohesion(agents, cohesionDistance) * cohesionWeight;
     }
 
-    public void StartMoving()
-    {
-        if (_velocity.sqrMagnitude < 0.001f)
-        {
-            Vector3 randomDirection = new Vector3(Random.Range(-1f, 1f), 0f, Random.Range(-1f, 1f)).normalized;
-            _velocity = randomDirection * speed;
-        }
-    }
-
-    public void StopMoving()
-    {
-        _velocity = Vector3.zero;
-    }
-
     private Vector3 CalculateFuturePosition(Agent target)
     {
         float distance = (target.transform.position - transform.position).magnitude;
@@ -213,4 +223,6 @@ public class SteeringAgent : Agent
 
         return futurePosition;
     }
+
+    #endregion
 }

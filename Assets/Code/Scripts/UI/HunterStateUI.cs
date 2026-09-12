@@ -1,10 +1,16 @@
 using System;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class HunterStateUI : StateUI
 {
     [SerializeField] private TMP_Text stateText;
+    [SerializeField] private Image attackCooldownImage;
+    [SerializeField] private Image attackCooldownImageBackground;
+    [SerializeField] private Image baitCooldownImage;
+    [SerializeField] private Image baitCooldownImageBackground;
+    [SerializeField] private Image channelingSlideImage;
 
     public override void SetState(Enum state)
     {
@@ -23,5 +29,22 @@ public class HunterStateUI : StateUI
                 _ => Color.white
             };
         }
+    }
+
+    public void SetAttackCooldown(float amount)
+    {
+        attackCooldownImage.fillAmount = amount;
+        attackCooldownImageBackground.fillAmount = amount;
+    }
+
+    public void SetBaitCooldown(float amount)
+    {
+        baitCooldownImage.fillAmount = amount;
+        baitCooldownImageBackground.fillAmount = amount;
+    }
+
+    public void SetChannelingSlide(float amount)
+    {
+        channelingSlideImage.fillAmount = amount;
     }
 }

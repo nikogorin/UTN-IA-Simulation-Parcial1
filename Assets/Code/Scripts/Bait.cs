@@ -15,8 +15,6 @@ public class Bait : MonoBehaviour
 
     public bool TryAssignAgent(PreyAgent agent)
     {
-        Debug.Log($"TryAssign {agent.name} - Current: {AssignedAgent?.name}");
-
         if (AssignedAgent != null) 
             return false;
 
@@ -30,8 +28,6 @@ public class Bait : MonoBehaviour
 
     public void ReleaseAgent(PreyAgent agent)
     {
-        Debug.Log($"Release {agent.name} - Current: {AssignedAgent?.name}");
-
         if (AssignedAgent == agent)
             AssignedAgent = null;
     }
