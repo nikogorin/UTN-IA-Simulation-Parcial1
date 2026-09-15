@@ -8,7 +8,7 @@ public class SteeringAgent : Agent
         Seek, Flee, Arrive, Pursuit, Evade, Flocking
     }
 
-    [Header("Stats")]
+    [Header("Movement Stats")]
     [Tooltip("Maximum speed the agent can move.")]
     [SerializeField] private float speed = 5f;
     [Tooltip("Maximum acceleration the agent can apply to change its velocity.")]
@@ -32,13 +32,18 @@ public class SteeringAgent : Agent
     [Tooltip("Weight applied to the cohesion steering behavior.")]
     [SerializeField, Range(0f, 3f)] private float cohesionWeight = 1f;
 
-    private void Awake()
+    #region [Unity Events]
+
+    protected virtual void Awake()
     {
-        Vector3 randomDirection = new Vector3(Random.Range(-1f, 1f), 0f, Random.Range(-1f, 1f));
-        _velocity = randomDirection.normalized * speed;
+        StartMoving();
     }
 
-    protected void Move()
+    #endregion
+
+    #region [Public Methods]
+
+    public void Move()
     {
         transform.position += _velocity * Time.deltaTime;
         if (_velocity.sqrMagnitude > 0.001f)
@@ -47,11 +52,29 @@ public class SteeringAgent : Agent
         transform.position = Bounds.Instance.OutOfBounds(transform.position);
     }
 
-    protected void ApplySteering(Vector3 steering)
+    public void ApplySteering(Vector3 steering)
     {
         _velocity += steering;
         _velocity = Vector3.ClampMagnitude(_velocity, speed);
     }
+
+    public void StartMoving()
+    {
+        if (_velocity.sqrMagnitude < 0.001f)
+        {
+            Vector3 randomDirection = new Vector3(Random.Range(-1f, 1f), 0f, Random.Range(-1f, 1f)).normalized;
+            _velocity = randomDirection * speed;
+        }
+    }
+
+    public void StopMoving()
+    {
+        _velocity = Vector3.zero;
+    }
+
+    #endregion
+
+    #region [Private Methods]
 
     private Vector3 CalculateSeparation(IEnumerable<Agent> agents, float distance)
     {
@@ -116,7 +139,7 @@ public class SteeringAgent : Agent
         return Seek(desired);
     }
 
-    protected Vector3 CalculateSteering(Vector3 desiredVelocity)
+    private Vector3 CalculateSteering(Vector3 desiredVelocity)
     {
         // Steering = Desired Velocity - Current Velocity
         Vector3 steering = desiredVelocity - _velocity;
@@ -169,7 +192,7 @@ public class SteeringAgent : Agent
         return steering;
     }
 
-    protected Vector3 Persuit(Agent target)
+    protected Vector3 Pursuit(Agent target)
     {
         Vector3 futurePosition = CalculateFuturePosition(target);
 
@@ -200,4 +223,6 @@ public class SteeringAgent : Agent
 
         return futurePosition;
     }
+
+    #endregion
 }
