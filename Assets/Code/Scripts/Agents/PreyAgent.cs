@@ -24,7 +24,7 @@ public class PreyAgent : SteeringAgent
     [SerializeField] private float baitDetectionRadius = 15f;
 
     [Header("Eat Settings")]
-    [SerializeField, Range(0, 1)] private float eatingDistance = 0.7f;
+    [SerializeField, Range(0, 2)] private float eatingDistance = 0.7f;
     [SerializeField, Min(0)] private float eatingTime = 2f;
 
     [Header("Gizmos")]

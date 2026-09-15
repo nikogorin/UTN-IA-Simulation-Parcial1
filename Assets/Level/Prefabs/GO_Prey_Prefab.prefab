@@ -92,7 +92,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 4096
   baitDetectionRadius: 15
-  eatingDistance: 0.9
+  eatingDistance: 1.5
   eatingTime: 2
   drawGizmos: 0
 --- !u!114 &4002552937222986193

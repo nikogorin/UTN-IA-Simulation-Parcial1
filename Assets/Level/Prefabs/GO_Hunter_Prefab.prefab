@@ -432,7 +432,7 @@ MonoBehaviour:
   placingBaitDelay: 2
   gatherDetectionRadius: 10
   gatherDuration: 3
-  gatheringDistance: 0.9
+  gatheringDistance: 1.5
   drawGizmos: 1
 --- !u!114 &6589151460542105398
 MonoBehaviour:

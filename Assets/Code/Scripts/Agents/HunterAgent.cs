@@ -20,7 +20,7 @@ public class HunterAgent : SteeringAgent
     [Header("Gather Stats")]
     [SerializeField] private float gatherDetectionRadius = 10f;
     [SerializeField] private float gatherDuration = 3f;
-    [SerializeField, Range(0, 1)] private float gatheringDistance = 0.9f;
+    [SerializeField, Range(0, 2)] private float gatheringDistance = 0.9f;
 
     [Header("Gizmos")]
     [SerializeField] private bool drawGizmos = true;

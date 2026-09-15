@@ -17,9 +17,10 @@ public class GoingToBaitState : State
             return;
         }
 
-        if (!_agent.IsBaitAssigned)
+        if(_agent.IsBaitAssigned && _agent.IsHunterDetected)
         {
-            _stateMachine.ChangeState(PreyState.Flocking);
+            _agent.ReleaseBait();
+            _stateMachine.ChangeState(PreyState.Evading);
             return;
         }
 
