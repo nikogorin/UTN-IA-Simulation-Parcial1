@@ -22,6 +22,9 @@ public class HunterAgent : SteeringAgent
     [SerializeField] private float gatherDuration = 3f;
     [SerializeField, Range(0, 2)] private float gatheringDistance = 0.9f;
 
+    [Header("Check Intervals")]
+    [SerializeField] private float preyDetectionInterval = 0.10f;
+
     [Header("Gizmos")]
     [SerializeField] private bool drawGizmos = true;
 
@@ -33,6 +36,9 @@ public class HunterAgent : SteeringAgent
     private float _currentBaitCooldown;
     private PlacingBaitState _placingBaitState;
     private GatherState _gatherState;
+    private double _nextPreyDetection;
+
+    private readonly Collider[] _preyBuffer = new Collider[16];
 
     public bool CanAttack => HasTargetAlive && IsReadyToAttack;
     public bool HasTargetAlive => _preyAgentAlive != null;
@@ -80,8 +86,13 @@ public class HunterAgent : SteeringAgent
 
     void Update()
     {
-        DetectPreyAlive();
-        DetectPreyDead();
+        double now = Time.timeAsDouble;
+
+        if (now >= _nextPreyDetection)
+        {
+            _nextPreyDetection = now + preyDetectionInterval;
+            DetectPrey();
+        }
 
         UpdateAttackTime();
         UpdateBaitCooldown();
@@ -154,50 +165,50 @@ public class HunterAgent : SteeringAgent
 
     #region [Private Methods]
 
-    private void DetectPreyAlive()
+    private void DetectPrey()
     {
-        Collider[] preyColliders = Physics.OverlapSphere(transform.position, targetDetectionRadius, preyLayer); // No need to use NonAlloc version since we are not concerned about performance here
-        _preyAgentAlive = null;
+        float detectionRadius = Mathf.Max(targetDetectionRadius, gatherDetectionRadius);
 
-        float closest = float.MaxValue;
-        foreach (var collider in preyColliders)
+        int count = Physics.OverlapSphereNonAlloc(transform.position, detectionRadius, _preyBuffer, preyLayer, QueryTriggerInteraction.Ignore);
+
+        PreyAgent closestAlive = null;
+        PreyAgent closestDead = null;
+
+        float closestAliveSqr = float.PositiveInfinity;
+        float closestDeadSqr = float.PositiveInfinity;
+
+        float attackRadiusSqr = targetDetectionRadius * targetDetectionRadius;
+        float gatherRadiusSqr = gatherDetectionRadius * gatherDetectionRadius;
+
+        for (int i = 0; i < count; i++)
         {
-            PreyAgent preyAgent = collider.GetComponent<PreyAgent>();
-
-            if (preyAgent == null || preyAgent.CurrentState == PreyState.Dead)
-                continue;
-            
-            float distance = Vector3.Distance(transform.position, preyAgent.transform.position);
-            if(distance < closest)
-            {
-                closest = distance;
-                _preyAgentAlive = preyAgent;
-            }
-        }
-    }
-
-    private void DetectPreyDead()
-    {
-        if (_preyAgentDead != null)
-            return;
-
-        Collider[] preyColliders = Physics.OverlapSphere(transform.position, gatherDetectionRadius, preyLayer); // No need to use NonAlloc version since we are not concerned about performance here
-
-        float closest = float.MaxValue;
-        foreach (var collider in preyColliders)
-        {
-            PreyAgent preyAgent = collider.GetComponent<PreyAgent>();
-
-            if (preyAgent == null || preyAgent.CurrentState != PreyState.Dead)
+            if (!_preyBuffer[i].TryGetComponent(out PreyAgent prey))
                 continue;
 
-            float distance = Vector3.Distance(transform.position, preyAgent.transform.position);
-            if (distance < closest)
+            float sqrDistance = (prey.transform.position - transform.position).sqrMagnitude;
+
+            if (prey.IsDead)
             {
-                closest = distance;
-                _preyAgentDead = preyAgent;
+                if (sqrDistance <= gatherRadiusSqr && sqrDistance < closestDeadSqr)
+                {
+                    closestDead = prey;
+                    closestDeadSqr = sqrDistance;
+                }
+            }
+            else
+            {
+                if (sqrDistance <= attackRadiusSqr && sqrDistance < closestAliveSqr)
+                {
+                    closestAlive = prey;
+                    closestAliveSqr = sqrDistance;
+                }
             }
         }
+
+        _preyAgentAlive = closestAlive;
+
+        if (_preyAgentDead == null)
+            _preyAgentDead = closestDead;
     }
 
     private void UpdateAttackTime()
