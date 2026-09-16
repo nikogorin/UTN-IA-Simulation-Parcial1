@@ -27,6 +27,11 @@ public class PreyAgent : SteeringAgent
     [SerializeField, Range(0, 2)] private float eatingDistance = 0.7f;
     [SerializeField, Min(0)] private float eatingTime = 2f;
 
+    [Header("Check Intervals")]
+    [SerializeField] private float flockCheckInterval = 0.10f;
+    [SerializeField] private float hunterCheckInterval = 0.075f;
+    [SerializeField] private float baitCheckInterval = 0.30f;
+
     [Header("Gizmos")]
     [SerializeField] private bool drawGizmos = false;
 
@@ -37,6 +42,13 @@ public class PreyAgent : SteeringAgent
     private StateMachine _stateMachine;
     private bool _gathered;
     private EatingState _eatingState;
+    private float _nextFlockCheck;
+    private float _nextHunterCheck;
+    private float _nextBaitCheck;
+
+    private readonly Collider[] _flockBuffer = new Collider[16];
+    private readonly Collider[] _hunterBuffer = new Collider[4];
+    private readonly Collider[] _baitBuffer = new Collider[8];
 
     public float CurrentHealth { get; private set; }
     public PreyState CurrentState { get; private set; }
@@ -53,6 +65,10 @@ public class PreyAgent : SteeringAgent
     protected override void Awake()
     {
         base.Awake();
+
+        _nextFlockCheck = Time.time + UnityEngine.Random.Range(0f, flockCheckInterval);
+        _nextHunterCheck = Time.time + UnityEngine.Random.Range(0f, hunterCheckInterval);
+        _nextBaitCheck = Time.time + UnityEngine.Random.Range(0f, baitCheckInterval);
 
         _stateMachine = new StateMachine();
         _stateUI = GetComponent<PreyStateUI>();
@@ -81,9 +97,25 @@ public class PreyAgent : SteeringAgent
 
     private void Update()
     {
-        DetectFlock();
-        DetectHunter();
-        DetectBait();
+        float now = Time.time;
+
+        if (now >= _nextHunterCheck)
+        {
+            DetectHunter();
+            _nextHunterCheck = now + hunterCheckInterval;
+        }
+
+        if (now >= _nextFlockCheck)
+        {
+            DetectFlock();
+            _nextFlockCheck = now + flockCheckInterval;
+        }
+
+        if (now >= _nextBaitCheck)
+        {
+            DetectBait();
+            _nextBaitCheck = now + baitCheckInterval;
+        }
 
         _stateMachine.Update();
     }
@@ -157,50 +189,69 @@ public class PreyAgent : SteeringAgent
     private void DetectFlock()
     {
         _flockAgents.Clear();
-        Collider[] flockColliders = Physics.OverlapSphere(transform.position, flockDetectionRadius, flockLayer); // No need to use NonAlloc version since we are not concerned about performance here
-        foreach (var collider in flockColliders)
+        int count = Physics.OverlapSphereNonAlloc(transform.position, flockDetectionRadius, _flockBuffer, flockLayer, QueryTriggerInteraction.Ignore);
+
+        for (int i = 0; i < count; i++)
         {
-            PreyAgent prey = collider.GetComponent<PreyAgent>();
-            if (prey != null && prey != this && prey.CurrentState == PreyState.Flocking)
-            {
-                _flockAgents.Add(prey);
-            }
+            if (!_flockBuffer[i].TryGetComponent(out PreyAgent prey))
+                continue;
+
+            if (prey == this || prey.CurrentState != PreyState.Flocking)
+                continue;
+
+            _flockAgents.Add(prey);
         }
     }
 
     private void DetectHunter()
     {
-        Collider[] hunterColliders = Physics.OverlapSphere(transform.position, hunterDetectionRadius, hunterLayer); // No need to use NonAlloc version since we are not concerned about performance here
-        foreach (var collider in hunterColliders)
+        _hunterAgent = null;
+
+        int count = Physics.OverlapSphereNonAlloc(transform.position, hunterDetectionRadius, _hunterBuffer, hunterLayer, QueryTriggerInteraction.Ignore);
+
+        float closestSqrDistance = float.PositiveInfinity;
+
+        for (int i = 0; i < count; i++)
         {
-            HunterAgent hunterAgent = collider.GetComponent<HunterAgent>();
-            if (hunterAgent != null && hunterAgent != this)
+            if (!_hunterBuffer[i].TryGetComponent(out HunterAgent hunter))
+                continue;
+
+            float sqrDistance = (hunter.transform.position - transform.position).sqrMagnitude;
+
+            if (sqrDistance < closestSqrDistance)
             {
-                _hunterAgent = hunterAgent;
-                return; // Exit after finding the first hunter
+                closestSqrDistance = sqrDistance;
+                _hunterAgent = hunter;
             }
         }
-        _hunterAgent = null; // No hunter detected
     }
 
     private void DetectBait()
     {
-        if (_targetBait != null)
+        if (IsBaitAssigned || !CanTakeBait)
             return;
 
-        if (!CanTakeBait)
-            return;
+        int count = Physics.OverlapSphereNonAlloc(transform.position, baitDetectionRadius, _baitBuffer, baitLayer, QueryTriggerInteraction.Ignore);
 
-        Collider[] baitColliders = Physics.OverlapSphere(transform.position, baitDetectionRadius, baitLayer); // No need to use NonAlloc version since we are not concerned about performance here
-        foreach (var collider in baitColliders)
+        Bait closestBait = null;
+        float closestSqrDistance = float.PositiveInfinity;
+
+        for (int i = 0; i < count; i++)
         {
-            Bait bait = collider.GetComponent<Bait>();
-            if (bait != null && bait.TryAssignAgent(this))
+            if (!_baitBuffer[i].TryGetComponent(out Bait bait))
+                continue;
+
+            float sqrDistance = (bait.transform.position - transform.position).sqrMagnitude;
+
+            if (sqrDistance < closestSqrDistance)
             {
-                _targetBait = bait;
-                return; // Exit after finding the first bait
+                closestSqrDistance = sqrDistance;
+                closestBait = bait;
             }
         }
+
+        if (closestBait != null && closestBait.TryAssignAgent(this))
+            _targetBait = closestBait;
     }
 
     private void OnDrawGizmos()
